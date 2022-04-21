@@ -10,9 +10,11 @@ import {
   selectHighPriorities,
   selectMediumPriorities,
   selectLowPriorities,
+  fetchTodoList,
+  postTodo,
 } from "./todoSlice";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Todo() {
   const todoList = useSelector(selectTodoArray);
@@ -43,7 +45,6 @@ export default function Todo() {
     true: 1,
     false: 2,
   };
-
   const setStatistics = todoList.map((todo) => {
     todo.isComplete ? (numberComplete += 1) : (numberIncomplete += 1);
 
@@ -57,6 +58,12 @@ export default function Todo() {
       lowPriorities += 1;
     }
   });
+
+  useEffect(() => {
+    //This code will be called when the Blogs component gets rendered for the first time and
+    // anytime blogLimit or blogPage gets updated
+    dispatch(fetchTodoList());
+  }, [dispatch]);
 
   return (
     <div className="Dashboard">
@@ -152,28 +159,6 @@ export default function Todo() {
               return 0;
             }
           })
-          // .sort(function (a, b) {
-          //   if (sortComplete) {
-          //     console.log("a", completeSortingOrder[a.isComplete]);
-          //     console.log("b", completeSortingOrder[b.isComplete]);
-
-          //     if (
-          //       completeSortingOrder[a.isComplete] <
-          //       completeSortingOrder[b.isComplete]
-          //     ) {
-          //       return -1;
-          //     }
-
-          //     if (
-          //       completeSortingOrder[a.isComplete] >
-          //       completeSortingOrder[b.isComplete]
-          //     ) {
-          //       return 1;
-          //     }
-
-          //     return 0;
-          //   }
-          // })
           .map((todo) => {
             return (
               <div>

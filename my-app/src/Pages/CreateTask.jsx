@@ -1,6 +1,10 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { addTodo, selectTodoArray } from "../features/todos/todoSlice";
+import {
+  addTodo,
+  selectTodoArray,
+  postTodo,
+} from "../features/todos/todoSlice";
 import { useState } from "react";
 
 export default function CreateTask() {
@@ -62,7 +66,7 @@ export default function CreateTask() {
           onClick={() => {
             navigate(`/`);
             dispatch(
-              addTodo({
+              postTodo({
                 id: todoList.length + 1,
                 title: title,
                 description: description,
@@ -72,6 +76,15 @@ export default function CreateTask() {
                 completeDate: completeDate,
               })
             );
+            // addTodo({
+            //   id: todoList.length + 1,
+            //   title: title,
+            //   description: description,
+            //   priority: priority,
+            //   isComplete: isComplete,
+            //   creationDate: new Date().toISOString(),
+            //   completeDate: completeDate,
+            // })
           }}
         >
           Add Todo

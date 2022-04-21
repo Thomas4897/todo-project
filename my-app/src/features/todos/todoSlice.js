@@ -1,38 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
-  todoArray: [
-    {
-      id: 1,
-      title: "Dentist",
-      description: "Go to the Dentist",
-      priority: "High",
-      isComplete: true,
-      creationDate: new Date().toISOString(),
-      completeDate: new Date().toISOString(),
-      editing: false,
-    },
-    {
-      id: 2,
-      title: "Groceries",
-      description: "Go grocery shopping",
-      priority: "Medium",
-      isComplete: false,
-      creationDate: new Date().toISOString(),
-      completeDate: "",
-      editing: false,
-    },
-    {
-      id: 3,
-      title: "DMV",
-      description: "Renew DL",
-      priority: "Critical",
-      isComplete: false,
-      creationDate: new Date().toISOString(),
-      completeDate: "",
-      editing: false,
-    },
-  ],
+  todoArray: [],
   numberComplete: 0,
   numberIncomplete: 0,
   criticalPriorities: 0,
@@ -88,6 +57,12 @@ export const todoSlice = createSlice({
       state.todoArray = deleteTodo;
     },
   },
+  extraReducers(builder) {
+    builder.addCase("todos/get-all-todos/fulfilled", (state, action) => {
+      console.log("Extra", action.payload);
+      state.todoArray = action.payload.payload;
+    });
+  },
 });
 
 export const { addTodo, editTodo, deleteTodo } = todoSlice.actions;
@@ -100,5 +75,28 @@ export const selectCriticalPriorities = (state) =>
 export const selectHighPriorities = (state) => state.todo.highPriorities;
 export const selectMediumPriorities = (state) => state.todo.mediumPriorities;
 export const selectLowPriorities = (state) => state.todo.lowPriorities;
+
+export const fetchTodoList = createAsyncThunk(
+  "todos/get-all-todos",
+  async () => {
+    const response = await fetch(`http://localhost:3001/todos/get-all-todos`);
+    const todoList = await response.json();
+    return todoList;
+  }
+);
+
+export const postTodo = createAsyncThunk("todos/create-todo", async (todo) => {
+  console.log(todo);
+  const response = await fetch(`http://localhost:3001/todos/create-todo`, {
+    method: "POST",
+    body: JSON.stringify(todo),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  const postBody = await response.json();
+  const todoStatus = postBody.created;
+  return todoStatus;
+});
 
 export default todoSlice.reducer;
