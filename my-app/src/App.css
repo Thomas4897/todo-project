@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+  color: white;
 }
 
 .App-logo {
@@ -14,6 +16,8 @@
 }
 
 .App-header {
+  text-align: center;
+  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -36,4 +40,37 @@
   100% {
     transform: translateY(0px);
   }
+}
+
+.Todo{
+  border: 2px solid black;
+  margin: 20px;
+  padding: 20px;
+
+}
+
+button{
+  margin: 20px
+}
+
+.Dashboard{
+  width: 90vw;
+  display: flex;
+  /* border: 2px solid wheat; */
+}
+
+.TodoList{
+  flex: 3;
+  /* border: 2px solid wheat; */
+
+}
+
+.TodoStatistics{
+  flex: 2;
+  /* border: 2px solid wheat; */
+}
+
+.Statistics{
+  margin: 20px;
+  padding: 20px;
 }
